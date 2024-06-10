@@ -18,7 +18,6 @@ def evaluate(agent, env, buckets, num_episodes):
         state = preprocess_image_frame(state)
         state = discretize_observation_state(state, buckets)
         total_reward = 0
-
         while True:
             action = agent.choose_action(state)
             next_state, reward, done, truncated, info = env.step(action)
@@ -28,7 +27,6 @@ def evaluate(agent, env, buckets, num_episodes):
             total_reward += reward
             if done or truncated:
                 break
-
         total_rewards.append(total_reward)
         print(f"Episode {episode + 1}: Total Reward: {total_reward}")
 
@@ -36,7 +34,6 @@ def evaluate(agent, env, buckets, num_episodes):
     avg_reward = np.mean(total_rewards)
     stability = np.std(total_rewards)
     computation_time = end_time - start_time
-
     print(f"Average Reward over {num_episodes} episodes: {avg_reward}")
     return avg_reward, stability, computation_time
 
