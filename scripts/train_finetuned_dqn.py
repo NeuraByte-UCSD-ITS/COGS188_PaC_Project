@@ -8,12 +8,12 @@ import gymnasium as gym
 import ale_py
 import logging
 
-# DQN
+#DQN
 class DeepQNetwork(tf.keras.Model):
     def __init__(self, action_space_size):
         super(DeepQNetwork, self).__init__()
-        self.first_hidden_layer = layers.Dense(256, activation='relu')  # fine-tune: increased hidden layer size
-        self.second_hidden_layer = layers.Dense(256, activation='relu') # fine-tune: increased hidden layer size
+        self.first_hidden_layer = layers.Dense(256, activation='relu')  #increased hidden layer size for fine tuning iteration 1
+        self.second_hidden_layer = layers.Dense(256, activation='relu') #increased hidden layer size for fine tuning iteration 1
         self.output_layer = layers.Dense(action_space_size, activation=None)
 
     def call(self, input_tensor):
@@ -49,6 +49,7 @@ def discretize_observation_state(observation_state, bucket_thresholds):
     bucket_indices = np.clip(bucket_indices, 0, max_index)
     return bucket_indices
 
+#increased replay buffer size, batch size, and decreased learning rate for fine tuning iteration 1
 class DeepQNetworkAgent:
     def __init__(self, state_shape, action_space_size, replay_buffer_size=20000, batch_size=128, discount_factor=0.99, learning_rate=0.0005, exploration_rate=1.0, exploration_decay=0.995, exploration_min=0.01):
         self.state_shape = state_shape
@@ -104,6 +105,11 @@ class DeepQNetworkAgent:
         self.policy_network.load_weights(filepath)
         self.update_target_network()
 
+#Registering all Atari environments, but comment out once registered to avoid re-registering/computation
+# ale_py.register_v0_v4_envs() 
+
+# print("Available environments after registration:", list(gym.envs.registry.keys()))
+
 def create_environment():
     environment = gym.make('ALE/MsPacman-v5')
     return environment
@@ -114,7 +120,7 @@ def train_deep_q_network():
     state_shape = (84, 84, 1)
     agent = DeepQNetworkAgent(state_shape=state_shape, action_space_size=environment.action_space.n)
     number_of_episodes = 1000
-    target_network_update_frequency = 5  # fine-tune: more frequent target network updates
+    target_network_update_frequency = 5  #decreased for more frequent target network updates for fine tuning iteration 1
     model_save_frequency = 100
     state_buckets = np.linspace(0, 255, 10)
 
@@ -169,7 +175,7 @@ def train_deep_q_network():
     state_shape = (84, 84, 1)
     agent = DeepQNetworkAgent(state_shape=state_shape, action_space_size=environment.action_space.n)
     number_of_episodes = 1000
-    target_network_update_frequency = 5  # fine-tune: more frequent target network updates
+    target_network_update_frequency = 5  #decreased for more frequent target network updates for fine tuning iteration 1
     model_save_frequency = 100
     state_buckets = np.linspace(0, 255, 10)
 
@@ -212,3 +218,4 @@ if __name__ == "__main__":
     with open("DQN_training_metrics_finetuned.csv", "w") as f:
         f.write("Model,Convergence Rate,Stability,Training Time\n")
         f.write(f"DQN_FineTuned,{convergence_rate},{stability},{training_time}\n")
+

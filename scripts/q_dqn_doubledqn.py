@@ -176,7 +176,7 @@ class DoubleDeepQNetworkAgent:
         self.policy_network.load_weights(filepath)
         self.update_target_network()
 
-
+#Qlearning
 class QLearningAgent:
     def __init__(self, state_space_size, action_space_size, learning_rate=0.1, discount_factor=0.99, exploration_rate=1.0, exploration_decay=0.995, exploration_min=0.01):
         self.state_space_size = state_space_size
@@ -209,8 +209,8 @@ class QLearningAgent:
             self.q_table = np.load(f)
 
 def create_environment():
-    environment = gym.make('ALE/MsPacman-v5') #without environment
-    #environment = gym.make('ALE/MsPacman-v5', render_mode='human') #with environment
+    environment = gym.make('ALE/MsPacman-v5') #with environment pop-up
+    #environment = gym.make('ALE/MsPacman-v5', render_mode='human') #with environment pop-up
     return environment
 
 def train_deep_q_network():
@@ -484,33 +484,39 @@ def train_q_learning_agent():
     return convergence_rate, stability, training_time
 
 if __name__ == "__main__":
-    ###### comment out the model you want to train ######
+    ###### ATTENTION: comment out the model you want to train one at a time######
     
+    #DQN Model-Free
     # convergence_rate, stability, training_time = train_deep_q_network()
     # with open("DQN_training_metrics.csv", "w") as f:
     #     f.write("Model,Convergence Rate,Stability,Training Time\n")
     #     f.write(f"DQN,{convergence_rate},{stability},{training_time}\n")
-            
+    
+    #DQN Hyperparameters
     # convergence_rate, stability, training_time = train_deep_q_network_with_hyperparameters()
     # with open("DQNhyperparameters_training_metrics.csv", "w") as f:
     #     f.write("Model,Convergence Rate,Stability,Training Time\n")
     #     f.write(f"DQNhyperparameters,{convergence_rate},{stability},{training_time}\n")
-        
+    
+    #DQN Exploitation
     # convergence_rate, stability, training_time = train_deep_q_network_for_exploitation()
     # with open("DQNexploitation_training_metrics.csv", "w") as f:
     #     f.write("Model,Convergence Rate,Stability,Training Time\n")
     #     f.write(f"DQNexploitation,{convergence_rate},{stability},{training_time}\n")
-        
+    
+    #DQN Exploration
     # convergence_rate, stability, training_time = train_deep_q_network_for_exploration()
     # with open("DQNexploration_training_metrics.csv", "w") as f:
     #     f.write("Model,Convergence Rate,Stability,Training Time\n")
     #     f.write(f"DQNexploration,{convergence_rate},{stability},{training_time}\n")
-        
+    
+    #Double DQN
     # convergence_rate, stability, training_time = train_double_deep_q_network()
     # with open("DoubleDQN_training_metrics.csv", "w") as f:
     #     f.write("Model,Convergence Rate,Stability,Training Time\n")
     #     f.write(f"DoubleDQN,{convergence_rate},{stability},{training_time}\n")
-        
+    
+    #Q-Learning 
     # convergence_rate, stability, training_time = train_q_learning_agent()
     # with open("QLearning_training_metrics.csv", "w") as f:
     #     f.write("Model,Convergence Rate,Stability,Training Time\n")
